@@ -7,11 +7,11 @@ import random
 
 class EpubProcessor:
     """Class for processing epub. This class is supposed to be the parent of another class that
-    overrides do_changes_to_temp method.
+    overrides make_changes_to_temp method.
 
-    Create instance of your class that extends EpubProcessor and overrides do_changes_to_temp().
+    Create instance of your class that extends EpubProcessor and overrides make_changes_to_temp().
     Then running process_epub() method of instance of your class will do the implemeted processing
-    in do_changes_to_temp() and save new .epub file with name "processed_{name of your old epub}".
+    in make_changes_to_temp() and save new .epub file with name "processed_{name of your old epub}".
 
     Attributes
     ----------
@@ -26,7 +26,7 @@ class EpubProcessor:
     -------
     extract_to_temp()
         Extract contents of .epub file to temporary folder.
-    do_changes_to_temp()
+    make_changes_to_temp()
         Override this method in the subclass of this class.
     temp_to_epub()
         Zip contents of temporaty folder to .epub file.
@@ -54,7 +54,7 @@ class EpubProcessor:
         """
         shutil.unpack_archive(self._fname, self._temp_directory, format='zip')
 
-    def do_changes_to_temp(self):
+    def make_changes_to_temp(self):
         """Has to be overriding by child class.
         """
         pass
@@ -77,5 +77,5 @@ class EpubProcessor:
         """Extract process and zip contents of .epub file.
         """
         self.extract_to_temp()
-        self.do_changes_to_temp()
+        self.make_changes_to_temp()
         self.temp_to_epub()
