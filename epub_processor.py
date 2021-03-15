@@ -1,6 +1,7 @@
 import shutil
 import zipfile
 from pathlib import Path
+import os
 import random
 
 
@@ -62,9 +63,13 @@ class EpubProcessor:
         """Zip _temp_directory into .epub
         The created epub file has the following name: "processed_" + initial name of epub 
         """
-        with zipfile.ZipFile(self._new_fname, 'w') as file:
-            for filename in Path(self._temp_directory).iterdir():
-                file.write(str(filename), filename.name)
+        with zipfile.ZipFile(self._new_fname, 'w') as zip_arc:
+            for directory, dirs, files in os.walk('./' + self._temp_directory):
+                arc_directory = os.path.relpath(directory, self._temp_directory)
+                zip_arc.write(directory, arc_directory)
+                for file_ in files:
+                    path = os.path.join(directory, file_)
+                    zip_arc.write(path, os.path.relpath(path, self._temp_directory))
 
         shutil.rmtree(str(self._temp_directory))
 
