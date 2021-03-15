@@ -45,9 +45,9 @@ class EpubProcessor:
         assert fname.endswith('.epub')
         self._fname = fname
         self._temp_directory = f"temp_extracted_{random.randint(10**19, 10**20-1)}"
-        splited_fname = fname.rsplit('/', maxsplit=2)
+        splited_fname = fname.rsplit(os.path.sep, maxsplit=2)
         splited_fname[-1] = "processed_" + splited_fname[-1]
-        self._new_fname = "/".join(splited_fname)
+        self._new_fname = os.path.sep.join(splited_fname)
 
     def extract_to_temp(self):
         """Extract the contents of .epub file to _temp_directory
@@ -64,7 +64,7 @@ class EpubProcessor:
         The created epub file has the following name: "processed_" + initial name of epub 
         """
         with zipfile.ZipFile(self._new_fname, 'w') as zip_arc:
-            for directory, dirs, files in os.walk('./' + self._temp_directory):
+            for directory, dirs, files in os.walk(self._temp_directory):
                 arc_directory = os.path.relpath(directory, self._temp_directory)
                 zip_arc.write(directory, arc_directory)
                 for file_ in files:
