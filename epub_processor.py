@@ -64,7 +64,7 @@ class EpubProcessor:
         The created epub file has the following name: "processed_" + initial name of epub 
         """
         with zipfile.ZipFile(self._new_fname, 'w') as zip_arc:
-            for directory, dirs, files in os.walk(self._temp_directory):
+            for directory, _, files in os.walk(self._temp_directory):
                 arc_directory = os.path.relpath(directory, self._temp_directory)
                 zip_arc.write(directory, arc_directory)
                 for file_ in files:
